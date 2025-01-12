@@ -2,13 +2,19 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import google.generativeai as genai
+import os
 
 # Configure the API Key for Google Generative AI
 genai.configure(api_key="AIzaSyDgxQNnsxs35NorPl78EM-jlRy-QRmDJeo")  # Replace with your actual API key
 
 # Create the Flask app
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:nikhil@localhost/chat_app'  # Replace with your MySQL connection info
+
+# Update the database URI with Render PostgreSQL details
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URL',
+    'postgresql+psycopg2://chat_app_aozx_user:qwQ4ZOjIpUpM9nFhIK2noR4MSsHrachw@dpg-cu1uj33tq21c73ble8eg-a.oregon-postgres.render.com/chat_app_aozx'
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database

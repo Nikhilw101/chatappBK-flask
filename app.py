@@ -8,8 +8,12 @@ genai.configure(api_key="AIzaSyDgxQNnsxs35NorPl78EM-jlRy-QRmDJeo")  # Replace wi
 
 # Create the Flask app
 app = Flask(__name__)
-# PostgreSQL connection string from Render
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://chat_app_aozx_user:qwQ4ZOjIpUpM9nFhIK2noR4MSsHrachw@dpg-cu1uj33tq21c73ble8eg-a.oregon-postgres.render.com/chat_app_aozx'
+
+# Update the database URL with your provided details
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    'postgresql://chat_app_aozx_user:qwQ4ZOjIpUpM9nFhIK2noR4MSsHrachw'
+    '@dpg-cu1uj33tq21c73ble8eg-a.oregon-postgres.render.com/chat_app_aozx'
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database
@@ -43,10 +47,6 @@ def store_chat_response(question, response):
 
 # Function to retrieve the latest chat interaction
 def get_last_interaction():
-    """
-    Retrieve the most recent question-response pair.
-    :return: Dictionary with the last question and response, or None if no interactions exist.
-    """
     try:
         last_entry = ChatResponse.query.order_by(ChatResponse.created_at.desc()).first()
         if last_entry:
@@ -59,10 +59,6 @@ def get_last_interaction():
 # Endpoint for receiving user input
 @app.route('/api/question', methods=['POST'])
 def receive_question():
-    """
-    Endpoint to receive a user question, generate a response using the AI model,
-    and store the question-response pair in the database.
-    """
     if 'question' not in request.form:
         return jsonify({'error': 'No question provided'}), 400
 
@@ -76,7 +72,6 @@ def receive_question():
     context_lines = []
 
     if last_interaction:
-        # Add the previous interaction to the context
         context_lines.append(f"Q: {last_interaction['question']}")
         context_lines.append(f"A: {last_interaction['response']}")
 

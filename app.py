@@ -8,7 +8,9 @@ genai.configure(api_key="AIzaSyDgxQNnsxs35NorPl78EM-jlRy-QRmDJeo")  # Replace wi
 
 # Create the Flask app
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://chat_app_aozx_user:qwQ4ZOjIpUpM9nFhIK2noR4MSsHrachw@dpg-cu1uj33tq21c73ble8eg-a/chat_app_aozx'
+
+# Internal Database URL provided by Render
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://chat_app_aozx_user:qwQ4ZOjIpUpM9nFhIK2noR4MSsHrachw@dpg-cu1uj33tq21c73ble8eg-a.oregon-postgres.render.com/chat_app_aozx'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database

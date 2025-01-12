@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import google.generativeai as genai
+import os
 
 # Configure the API Key for Google Generative AI
 genai.configure(api_key="AIzaSyDgxQNnsxs35NorPl78EM-jlRy-QRmDJeo")  # Replace with your actual API key
@@ -9,8 +10,11 @@ genai.configure(api_key="AIzaSyDgxQNnsxs35NorPl78EM-jlRy-QRmDJeo")  # Replace wi
 # Create the Flask app
 app = Flask(__name__)
 
-# Internal Database URL provided by Render
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://chat_app_aozx_user:qwQ4ZOjIpUpM9nFhIK2noR4MSsHrachw@dpg-cu1uj33tq21c73ble8eg-a.oregon-postgres.render.com/chat_app_aozx'
+# Update the database URI with Render PostgreSQL details (external URL)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URL',
+    'postgresql://chat_app_aozx_user:qwQ4ZOjIpUpM9nFhIK2noR4MSsHrachw@dpg-cu1uj33tq21c73ble8eg-a.oregon-postgres.render.com/chat_app_aozx'
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database
